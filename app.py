@@ -163,7 +163,8 @@ st.markdown("---")
 st.subheader("🔎 Explore Top Fake Health News Tweets by Topic")
 
 topic_options = sorted(df["Topic"].unique())
-selected_topic = st.selectbox("Choose a topic:", topic_options)
+default_topic = "Aspirin, Cancer, Death" if "Aspirin, Cancer, Death" in topic_options else topic_options[0]
+selected_topic = st.selectbox("Choose a topic:", topic_options, index=topic_options.index(default_topic))
 top_n = st.slider("Number of tweets to view:", min_value=3, max_value=30, value=5)
 
 filtered = df[df["Topic"] == selected_topic].sort_values("Total Engagement", ascending=False).head(top_n)
