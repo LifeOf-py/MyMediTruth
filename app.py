@@ -56,6 +56,12 @@ def build_topic_model(tweets):
     topics, _ = topic_model.fit_transform(tweets, embeddings)
     return topic_model, topics
 
+@st.cache_data
+def generate_wordcloud(topics):
+    topic_words = " ".join(topics)
+    wc = WordCloud(width=800, height=300, background_color="white", collocations=False).generate(topic_words)
+    return wc
+
 # === GPT Logic with Label Correction ===
 def explain_claim(text, predicted_label):
     prompt = f"""
@@ -121,8 +127,8 @@ col1, col2 = st.columns(2)
 
 with col1:
     st.subheader("☁️ Trending Themes in Fake Health News")
-    topic_words = " ".join(df[df["Topic"] != "Uncategorized"]["Topic"].tolist())
-    wc = WordCloud(width=800, height=300, background_color="white", collocations=False).generate(topic_words)
+    filtered_topics = df[df["Topic"] != "Uncategorized"]["Topic"].tolist()
+    wc = generate_wordcloud(filtered_topics)
     fig, ax = plt.subplots(figsize=(8, 3))
     ax.imshow(wc, interpolation="bilinear")
     ax.axis("off")
