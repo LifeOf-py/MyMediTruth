@@ -154,7 +154,7 @@ with col2:
 
 # === Tweet Filter by Topic ===
 st.markdown("---")
-st.subheader("🔎 Explore Top Fake Tweets by Topic")
+st.subheader("🔎 Explore Top Fake Health News Tweets by Topic")
 
 topic_options = sorted(df["Topic"].unique())
 selected_topic = st.selectbox("Choose a topic:", topic_options)
