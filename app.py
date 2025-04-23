@@ -11,7 +11,6 @@ from sentence_transformers import SentenceTransformer
 import openai
 
 # === CONFIG ===
-st.set_option('logger.level', 'warning')
 st.set_page_config(page_title="MyMediTruth", layout="wide")
 st.title("🩺 MyMediTruth: Unmasking Misinformation in Health-Care")
 
@@ -172,7 +171,6 @@ filtered = filtered.reset_index(drop=True)
 filtered.index += 1
 
 tweet_table = filtered[["Tweet", "Tweet Count", "Retweets", "Replies", "Total Engagement"]].copy()
-tweet_table.insert(0, "S.No.", tweet_table.index)
 st.dataframe(tweet_table, use_container_width=True)
 
 # === Claim Checker ===
