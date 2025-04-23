@@ -56,6 +56,12 @@ def build_topic_model(tweets):
     topics, _ = topic_model.fit_transform(tweets, embeddings)
     return topic_model, topics
 
+@st.cache_data
+def generate_wordcloud(topics):
+    topic_words = " ".join(topics)
+    wc = WordCloud(width=800, height=300, background_color="white", collocations=False).generate(topic_words)
+    return wc
+
 # === GPT Logic with Label Correction ===
 def explain_claim(text, predicted_label):
     prompt = f"""
@@ -121,8 +127,8 @@ col1, col2 = st.columns(2)
 
 with col1:
     st.subheader("☁️ Trending Themes in Fake Health News")
-    topic_words = " ".join(df[df["Topic"] != "Uncategorized"]["Topic"].tolist())
-    wc = WordCloud(width=800, height=300, background_color="white", collocations=False).generate(topic_words)
+    filtered_topics = df[df["Topic"] != "Uncategorized"]["Topic"].tolist()
+    wc = generate_wordcloud(filtered_topics)
     fig, ax = plt.subplots(figsize=(8, 3))
     ax.imshow(wc, interpolation="bilinear")
     ax.axis("off")
@@ -154,10 +160,11 @@ with col2:
 
 # === Tweet Filter by Topic ===
 st.markdown("---")
-st.subheader("🔎 Explore Top Fake Tweets by Topic")
+st.subheader("🔎 Explore Top Fake Health News Tweets by Topic")
 
 topic_options = sorted(df["Topic"].unique())
-selected_topic = st.selectbox("Choose a topic:", topic_options)
+default_topic = "Aspirin, Cancer, Death" if "Aspirin, Cancer, Death" in topic_options else topic_options[0]
+selected_topic = st.selectbox("Choose a topic:", topic_options, index=topic_options.index(default_topic))
 top_n = st.slider("Number of tweets to view:", min_value=3, max_value=30, value=5)
 
 filtered = df[df["Topic"] == selected_topic].sort_values("Total Engagement", ascending=False).head(top_n)
@@ -165,7 +172,6 @@ filtered = filtered.reset_index(drop=True)
 filtered.index += 1
 
 tweet_table = filtered[["Tweet", "Tweet Count", "Retweets", "Replies", "Total Engagement"]].copy()
-tweet_table.insert(0, "S.No.", tweet_table.index)
 st.dataframe(tweet_table, use_container_width=True)
 
 # === Claim Checker ===
