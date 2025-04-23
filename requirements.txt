@@ -1,8 +1,10 @@
 streamlit
+pandas
+matplotlib
+wordcloud
+openai
+azure-storage-blob
 transformers
 torch
-pandas
-numpy
-wordcloud
-matplotlib
-openai
+sentence-transformers
+bertopic
