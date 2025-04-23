@@ -11,6 +11,7 @@ from sentence_transformers import SentenceTransformer
 import openai
 
 # === CONFIG ===
+st.set_option('logger.level', 'warning')
 st.set_page_config(page_title="MyMediTruth", layout="wide")
 st.title("🩺 MyMediTruth: Unmasking Misinformation in Health-Care")
 
