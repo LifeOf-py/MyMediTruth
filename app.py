@@ -58,7 +58,9 @@ def build_topic_model(tweets):
 
 @st.cache_data
 def generate_wordcloud(topics):
-    topic_words = " ".join(topics)
+    exclusions = {"story", "study"}
+    cleaned = [word for word in topics if all(x.lower() not in word.lower() for x in exclusions)]
+    topic_words = " ".join(cleaned)
     wc = WordCloud(width=800, height=300, background_color="white", collocations=False).generate(topic_words)
     return wc
 
