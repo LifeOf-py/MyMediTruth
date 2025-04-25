@@ -12,7 +12,7 @@ import openai
 
 # === CONFIG ===
 st.set_page_config(page_title="MyMediTruth", layout="wide")
-st.title("🩺 MyMediTruth: Unmasking Misinformation in Health-Care")
+st.title("🩺 MyMediTruth: Unmasking Misinformation in Healthcare")
 
 account_name = st.secrets["AZURE_STORAGE_ACCOUNT_NAME"]
 container_name = st.secrets["AZURE_CONTAINER_NAME"]
