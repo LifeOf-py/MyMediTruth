@@ -211,9 +211,9 @@ if st.button("Check Claim") and user_claim.strip():
             final_label, explanation = explain_claim(user_claim, label)
 
         if final_label == "real":
-        st.markdown("### 🟢 This claim appears to be **real**.")
-    else:
-        st.markdown("### 🔴 This claim appears to be **fake**.")
+            st.markdown("### 🟢 This claim appears to be **real**.")
+            else:
+            st.markdown("### 🔴 This claim appears to be **fake**.")
 
-    st.markdown("#### Why this assessment?")
-    st.write(explanation)
+            st.markdown("#### Why this assessment?")
+        st.write(explanation)
