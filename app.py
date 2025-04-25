@@ -12,7 +12,7 @@ import openai
 
 # === CONFIG ===
 st.set_page_config(page_title="MyMediTruth", layout="wide")
-st.title("🩺 MyMediTruth: Unmasking Misinformation in Healthcare")
+st.title("🩺 MyMediTruth: Unmasking Misinformation in Health-Care")
 
 account_name = st.secrets["AZURE_STORAGE_ACCOUNT_NAME"]
 container_name = st.secrets["AZURE_CONTAINER_NAME"]
@@ -181,12 +181,34 @@ st.subheader("✅ Check a Self-Care Claim")
 user_claim = st.text_area("Enter a claim to verify:", placeholder="e.g., Drinking lemon water detoxifies your liver.")
 
 if st.button("Check Claim") and user_claim.strip():
-    with st.spinner("Analyzing..."):
-        pred = clf([user_claim])[0]
-        label = pred['label'].lower()
-        final_label, explanation = explain_claim(user_claim, label)
+    with st.spinner("Checking if the claim is health-related..."):
+        domain_check_prompt = f"""
+        Is the following statement related to health, medicine, or self-care? Only reply with 'Yes' or 'No'.
 
-    if final_label == "real":
+        Claim: \"{user_claim}\"
+        """
+        try:
+            domain_response = openai.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {"role": "user", "content": domain_check_prompt.strip()}
+                ],
+                temperature=0,
+                max_tokens=10
+            )
+            is_health = domain_response.choices[0].message.content.strip().lower().startswith("yes")
+        except:
+            is_health = True  # fallback to allow if GPT fails
+
+    if not is_health:
+        st.warning("⚠️ This doesn't appear to be a healthcare-related claim. Please enter a relevant statement.")
+    else:
+        with st.spinner("Analyzing..."):
+            pred = clf([user_claim])[0]
+            label = pred['label'].lower()
+            final_label, explanation = explain_claim(user_claim, label)
+
+        if final_label == "real":
         st.markdown("### 🟢 This claim appears to be **real**.")
     else:
         st.markdown("### 🔴 This claim appears to be **fake**.")
