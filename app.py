@@ -185,7 +185,11 @@ user_claim = st.text_area("Enter a claim to verify:", placeholder="e.g., Drinkin
 if st.button("Check Claim") and user_claim.strip():
     with st.spinner("Checking if the claim is health-related..."):
         domain_check_prompt = f"""
-        Is the following statement related to health, medicine, or self-care? Only reply with 'Yes' or 'No'.
+        A user submitted a statement to our health misinformation system.
+
+        Please determine if the following claim is related to physical health, medicine, diseases, treatments, wellness, or self-care practices. These include conditions like cancer, diabetes, heart issues, mental health, supplements, remedies, fitness, diet, skincare, etc.
+
+        Respond only with 'Yes' or 'No'.
 
         Claim: \"{user_claim}\"
         """
