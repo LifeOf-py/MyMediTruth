@@ -74,7 +74,7 @@ Is this claim real or fake? Respond with 'Label: Real' or 'Label: Fake', then ex
 """
     try:
         response = openai.chat.completions.create(
-            model="gpt-3.5-turbo",
+            model="gpt-4",
             messages=[
                 {"role": "system", "content": "You are a medical fact-checking assistant."},
                 {"role": "user", "content": prompt}
@@ -195,7 +195,7 @@ if st.button("Check Claim") and user_claim.strip():
         """
         try:
             domain_response = openai.chat.completions.create(
-                model="gpt-3.5-turbo",
+                model="gpt-4",
                 messages=[
                     {"role": "user", "content": domain_check_prompt.strip()}
                 ],
