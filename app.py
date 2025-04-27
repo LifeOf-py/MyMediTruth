@@ -58,7 +58,9 @@ def build_topic_model(tweets):
 
 @st.cache_data
 def generate_wordcloud(topics):
-    topic_words = " ".join(topics)
+    exclusions = {"story", "study"}
+    cleaned = [word for word in topics if all(x.lower() not in word.lower() for x in exclusions)]
+    topic_words = " ".join(cleaned)
     wc = WordCloud(width=800, height=300, background_color="white", collocations=False).generate(topic_words)
     return wc
 
@@ -72,7 +74,7 @@ Is this claim real or fake? Respond with 'Label: Real' or 'Label: Fake', then ex
 """
     try:
         response = openai.chat.completions.create(
-            model="gpt-3.5-turbo",
+            model="gpt-4",
             messages=[
                 {"role": "system", "content": "You are a medical fact-checking assistant."},
                 {"role": "user", "content": prompt}
@@ -181,15 +183,41 @@ st.subheader("✅ Check a Self-Care Claim")
 user_claim = st.text_area("Enter a claim to verify:", placeholder="e.g., Drinking lemon water detoxifies your liver.")
 
 if st.button("Check Claim") and user_claim.strip():
-    with st.spinner("Analyzing..."):
-        pred = clf([user_claim])[0]
-        label = pred['label'].lower()
-        final_label, explanation = explain_claim(user_claim, label)
+    with st.spinner("Checking if the claim is health-related..."):
+        domain_check_prompt = f"""
+        A user submitted a statement to our health misinformation system.
 
-    if final_label == "real":
-        st.markdown("### 🟢 This claim appears to be **real**.")
+        Please determine if the following claim is related to physical health, medicine, diseases, treatments, wellness, or self-care practices. These include conditions like cancer, diabetes, heart issues, mental health, supplements, remedies, fitness, diet, skincare, etc.
+
+        Respond only with 'Yes' or 'No'.
+
+        Claim: \"{user_claim}\"
+        """
+        try:
+            domain_response = openai.chat.completions.create(
+                model="gpt-4",
+                messages=[
+                    {"role": "user", "content": domain_check_prompt.strip()}
+                ],
+                temperature=0,
+                max_tokens=10
+            )
+            is_health = domain_response.choices[0].message.content.strip().lower().startswith("yes")
+        except:
+            is_health = True  # fallback to allow if GPT fails
+
+    if not is_health:
+        st.warning("⚠️ This doesn't appear to be a healthcare-related claim. Please enter a relevant statement.")
     else:
-        st.markdown("### 🔴 This claim appears to be **fake**.")
+        with st.spinner("Analyzing..."):
+            pred = clf([user_claim])[0]
+            label = pred['label'].lower()
+            final_label, explanation = explain_claim(user_claim, label)
 
-    st.markdown("#### Why this assessment?")
-    st.write(explanation)
+        if final_label == "real":
+            st.markdown("### 🟢 This claim appears to be **real**.")
+        else:
+            st.markdown("### 🔴 This claim appears to be **fake**.")
+
+        st.markdown("#### Why this assessment?")
+        st.write(explanation)
