@@ -2,7 +2,7 @@
 
 ---
 
-## 📖 Project Overview
+## Project Overview
 
 **MyMediTruth** is an AI-powered application designed to detect and explain misleading or fake healthcare claims.  
 We combine a fine-tuned **RoBERTa model** for classification with **GPT-4** explanations, deployed through a scalable **Streamlit** web app integrated with **Azure Blob Storage**.
@@ -19,7 +19,7 @@ We combine a fine-tuned **RoBERTa model** for classification with **GPT-4** expl
 
 ---
 
-## 🛠 Setup and Usage Instructions
+## Setup and Usage Instructions
 
 ### 1. Clone the Repository
 
