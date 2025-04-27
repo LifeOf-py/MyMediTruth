@@ -225,7 +225,7 @@ results = clf_pipeline(claims)
 
 # ✅ Step 4: GPT-based explanation and fallback labeling (OpenAI SDK v1.x)
 import openai
-client = openai.OpenAI(api_key="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")  # Replace securely
+client = openai.OpenAI(api_key="")  # Replace securely
 
 def explain_claim(text, predicted_label, confidence, threshold=0.85):
     prompt = f"""
