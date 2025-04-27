@@ -54,9 +54,9 @@ streamlit run app.py
 You can deploy the app on Streamlit Cloud by linking your GitHub repository and configuring your Streamlit Secrets in the cloud workspace.
 
 ## Project Materials
-[Streamlit App Link](https://mymeditruth.streamlit.app/)
-[Project Flier](https://github.com/LifeOf-py/MyMediTruth/blob/main/MyMediTruth_Flyer_Team6.pdf)
-[FakeHealth Dataset Reference](https://github.com/EnyanDai/FakeHealth)
+- [Streamlit App Link](https://mymeditruth.streamlit.app/)
+- [Project Flier](https://github.com/LifeOf-py/MyMediTruth/blob/main/MyMediTruth_Flyer_Team6.pdf)
+- [FakeHealth Dataset Reference](https://github.com/EnyanDai/FakeHealth)
 
 ## Technologies Used
 - RoBERTa Fine-Tuning (HuggingFace Transformers)
@@ -74,5 +74,5 @@ It is targeted toward:
 - Public health organizations tracking misinformation trends
 
 ## Acknowledgements
-- [https://github.com/EnyanDai](https://github.com/EnyanDai/FakeHealth) for providing labeled health stories and engagement metrics.
+- [EnyanDai](https://github.com/EnyanDai/FakeHealth) for providing labeled health stories and engagement metrics.
 - OpenAI, Azure, HuggingFace, and BERTopic open-source communities.
