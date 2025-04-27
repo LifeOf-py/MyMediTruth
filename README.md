@@ -1,4 +1,4 @@
-# 🩺 MyMediTruth: Unmasking Misinformation in Health-Care
+# 🩺 MyMediTruth: Unmasking Misinformation in Healthcare
 
 ---
 
